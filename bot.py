@@ -16,6 +16,8 @@
 #   return None
 #
 # For full API description and usage please visit the Rules section
+import random
+
 
 class Bot(object):
 
@@ -31,4 +33,58 @@ class Bot(object):
         :param life: Current life level, An integer between between 0-100.
         :return: see the comments above
         '''
-        return None
+
+        result = {}
+
+        if feedback['ACTION'] == None:
+            result = {'ACTION':'SHOOT','ANGLE': 45, 'VEL': 100}
+            oldResult = {'ACTION':'SHOOT','ANGLE': 45, 'VEL': 100}
+            oldLife = life
+
+        if life < oldLife:
+            if feedback['RESULT'] == 'SUCCESS':
+                if oldResult['ACTION'] == 'SHOOT':
+                    result = oldResult
+                else:
+                    result = {'ACTION':'SHOOT','ANGLE': 25, 'VEL': 100}
+            else:
+                if oldResult['ACTION'] == 'SHOOT':
+                    result = oldResult
+                    if feedback['MISSING'] == 'HOT':
+                        i = random.randint(0,1)
+                        if i == 0:
+                            result['ANGLE'] = result['ANGLE'] - 5
+                        else:
+                            result['ANGLE'] = result['ANGLE'] + 5
+                    elif feedback['MISSING'] == 'WARM':
+                        i = random.randint (0,1)
+                        if i == 0:
+                            result['ANGLE'] = result['ANGLE'] - 10
+                            if result['ANGLE'] > 60:
+                                result['ANGLE'] = 60
+                        else:
+                            result['ANGLE'] = result['ANGLE'] + 10
+                            if result['ANGLE'] < 10:
+                                result['ANGLE'] = 10
+                    elif feedback['MISSING'] == 'COLD':
+                        i = random.randint (0,1)
+                        if i == 0:
+                            result['ANGLE'] = result['ANGLE'] - 15
+                            if result['ANGLE'] > 60:
+                                result['ANGLE'] = 60
+                        else:
+                            result['ANGLE'] = result['ANGLE'] + 15
+                            if result['ANGLE'] < 10:
+                                result['ANGLE'] = 1
+        else:
+            i = random.randint (0,1)
+            if i == 0:
+                result = {'ACTION':'MOVE','WERE': 1}
+            else:
+                result = {'ACTION':'MOVE','WERE': -1}
+
+
+        oldLife
+        oldResult = result
+        return result
+
