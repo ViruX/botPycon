@@ -41,7 +41,7 @@ class Bot(object):
             oldResult = {'ACTION':'SHOOT','ANGLE': 45, 'VEL': 100}
             oldLife = life
 
-        if life < oldLife:
+        if life >= oldLife:
             if feedback['RESULT'] == 'SUCCESS':
                 if oldResult['ACTION'] == 'SHOOT':
                     result = oldResult
@@ -84,7 +84,7 @@ class Bot(object):
                 result = {'ACTION':'MOVE','WERE': -1}
 
 
-        oldLife
+        oldLife = life
         oldResult = result
         return result
 
